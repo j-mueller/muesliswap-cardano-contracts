@@ -101,6 +101,10 @@ mkOrderValidator od redeemer ctx = case redeemer of
   orderedValue o =
     Value.singleton (oBuyCurrency o) (oBuyToken o) (oBuyAmount o)
 
+  ownInValue :: Value
+  ownInValue = case (findOwnInput ctx) of
+    Just inInfo -> (txOutValue . txInInfoResolved) inInfo
+
   resolvePubKeyHash :: Maybe PubKeyHash -> PubKeyHash
   resolvePubKeyHash pkh = case pkh of
     Just h -> h
@@ -113,27 +117,40 @@ mkOrderValidator od redeemer ctx = case redeemer of
     , resolvePubKeyHash (toPubKeyHash (txOutAddress o')) == h
     ]
 
+  scriptAddress :: Ledger.Address
+  scriptAddress = case findOwnInput ctx of
+    Just i -> txOutAddress $ txInInfoResolved i
+
+  isOwnScriptInput :: TxInInfo -> Bool
+  isOwnScriptInput i =
+    let input = txInInfoResolved i
+    in  case txOutDatumHash input of
+          Nothing -> False
+          Just _  -> (txOutAddress input) == scriptAddress
+
+  inputValueFromScript :: Value
+  inputValueFromScript = sum
+    [ txOutValue $ txInInfoResolved i
+    | i <- txInfoInputs info
+    , isOwnScriptInput i
+    ]
+
   getsAtLeastValue :: PubKeyHash -> Value -> Bool
   getsAtLeastValue h v = (getsValue h) `geq` v
 
   correctFull :: Bool
-  correctFull
-    | (oBuyCurrency order == Plutus.adaSymbol)
-      && (oBuyToken order == Plutus.adaToken)
-    = getsAtLeastValue (oCreator order)
-                       ((orderedValue order) <> (lovelaceValueOf 1500000))
-    | otherwise
-    = getsAtLeastValue (oCreator order) (orderedValue order)
+  correctFull =
+    getsAtLeastValue (oCreator order)
+                     ((orderedValue order) <> (lovelaceValueOf 1500000))
+      &&    inputValueFromScript
+      `geq` ((orderedValue order) <> ownInValue <> (lovelaceValueOf 1500000))
 
   checkSig :: Bool
   checkSig = txSignedBy info (oCreator order)
 
   twoParties :: Bool
   twoParties =
-    let isScriptInput i = case (txOutDatumHash . txInInfoResolved) i of
-          Nothing -> False
-          Just _  -> True
-        xs = [ i | i <- txInfoInputs info, isScriptInput i ]
+    let xs = [ i | i <- txInfoInputs info, isOwnScriptInput i ]
     in  case xs of
           [_, _] -> True
           _      -> False
