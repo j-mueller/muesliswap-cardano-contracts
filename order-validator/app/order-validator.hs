@@ -21,6 +21,6 @@ import           Cardano.PlutusExample.OrderValidator (orderSerialised)
 
 main :: IO ()
 main = do
-  writeFileTextEnvelope "v1.1.plutus" Nothing orderSerialised
+  writeFileTextEnvelope "order_validator_v1.1.plutus" Nothing orderSerialised
   return ()
   
