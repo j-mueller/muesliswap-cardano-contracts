@@ -37,6 +37,28 @@ Any party can act as the matchmaker, as long as it proves to the script
 that all participants in the trade receive what they ordered.
 
 
+# Build instructions
+
+In order to verify the contract is indeed the one used on-chain, you need to build the project and compute the address of the script yourself. To do so, first compile via
+
+```bash
+cabal build order-validator
+```
+
+and then run
+
+```bash
+cabal run order-validator
+```
+
+to produce the 'order_validator_v1.1.plutus' file. To get the corresponding address via the cardano CLI, run
+
+```bash
+cardano-cli address build --payment-script-file order_validator_v1.1.plutus --mainnet --out-file order_validator_v1.1.addr
+```
+
+
+
 # References
 
 - [1] Plutus Programming Language Overview: https://testnets.cardano.org/en/programming-languages/plutus/overview/
