@@ -42,7 +42,7 @@ library
 
   hs-source-dirs:       src
 
-  exposed-modules:      Cardano.PlutusExample.OrderValidator
+  exposed-modules:      Cardano.MuesliSwapOrderValidator.OrderValidator
 
   build-depends:        bytestring
                       , cardano-api
