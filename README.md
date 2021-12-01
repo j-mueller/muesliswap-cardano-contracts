@@ -64,5 +64,5 @@ cardano-cli address build --payment-script-file order_validator_v1.1.plutus --ma
 - [1] Plutus Programming Language Overview: https://testnets.cardano.org/en/programming-languages/plutus/overview/
 - [2] Plutus Pioneer Program: https://github.com/input-output-hk/plutus-pioneer-program
 - [3] How to Build a Fast Limit Order Book: https://web.archive.org/web/20110219163448/http://howtohft.wordpress.com/2011/02/15/how-to-build-a-fast-limit-order-book/
-- [4] check `plutus_v1.addr` for the address of the script
+- [4] check `order_validator_v1.1.addr` for the address of the script
 - [5] https://githubmemory.com/repo/input-output-hk/cardano-addresses
