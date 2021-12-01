@@ -15,7 +15,7 @@
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE TypeOperators              #-}
 
-module Cardano.PlutusExample.OrderValidator
+module Cardano.MuesliSwapOrderValidator.OrderValidator
   ( orderSerialised
   , orderSBS
   ) where
