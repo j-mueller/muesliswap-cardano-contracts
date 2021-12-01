@@ -17,7 +17,7 @@
 
 import           Prelude
 import           Cardano.Api
-import           Cardano.PlutusExample.OrderValidator (orderSerialised)
+import           Cardano.MuesliSwapOrderValidator.OrderValidator (orderSerialised)
 
 main :: IO ()
 main = do
