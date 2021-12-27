@@ -18,6 +18,13 @@
 module Cardano.MuesliSwapOrderValidator.OrderValidator
   ( orderSerialised
   , orderSBS
+  , Order(..)
+  , OrderAction(..)
+  , OrderDatum(..)
+  , orderTypedValidator
+  , orderValidator
+  , orderAddress
+  , orderScript
   ) where
 
 {-# OPTIONS_GHC -fno-warn-unused-imports #-}
